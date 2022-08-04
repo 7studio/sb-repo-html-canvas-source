@@ -1,0 +1,83 @@
+import htmlReactParser from 'html-react-parser'
+import { Meta, Story, Canvas, ArgsTable, Source } from '@storybook/addon-docs'
+import dedent from 'ts-dedent'
+
+<Meta
+  title="Dynamic source"
+  parameters={{
+    viewMode: 'docs',
+    source: {
+      language: 'html',
+      type: 'dynamic',
+    },
+  }}
+  argTypes={{
+    name: {
+      name: 'name',
+      description: 'Name',
+      table: {
+        type: {
+          summary: 'string',
+        },
+        defaultValue: { summary: '' },
+      },
+      control: { type: 'text' },
+    },
+    description: {
+      name: 'description',
+      description: 'Description',
+      table: {
+        type: {
+          summary: 'string',
+        },
+        defaultValue: { summary: '' },
+      },
+      control: { type: 'text' },
+    },
+  }}
+/>
+
+export const Tmpl = (args) => `
+<article>
+    <h1>${args.name}</h1>
+    <p>${args.description}</p>
+</article>
+`
+
+# Canvas
+
+<Canvas withSource="open">
+  {htmlReactParser(
+    Tmpl({
+      name: 'Canvas',
+      description: 'Source should be dynamic like with stories :(',
+    })
+  )}
+</Canvas>
+
+# Story into Canvas
+
+<Canvas withSource="open">
+  <Story
+    name="Dynamic source"
+    parameters={{
+      controls: { expanded: true },
+    }}
+    args={{
+      name: 'Story into Canvas',
+      description: 'Source is dynamic \\o/',
+    }}
+  >
+    {Tmpl.bind({})}
+  </Story>
+</Canvas>
+
+
+# Canvas HTML
+
+<Canvas withSource="open">
+    <article>
+        <h1>HTML into Canvas</h1>
+        <p>With <code>withSource="open"</code> Source block should be opened by default</p>
+    </article>
+</Canvas>
